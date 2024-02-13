@@ -1,6 +1,6 @@
 {
   "name": "query-pile",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A set of utilities to make using Tanstack/React Query easier.",
   "repository": "StevenJPx2/query-pile",
   "license": "MIT",
