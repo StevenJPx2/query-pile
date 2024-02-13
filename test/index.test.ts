@@ -11,13 +11,13 @@ describe("packageName", () => {
       getItems2: (item: number) => [item, "item2"],
     });
 
-    expect(api).toBe({
+    expect(api).toStrictEqual({
       getItems: expect.any(Function),
       getItems2: expect.any(Function),
     });
 
     const items: readonly [string, "item2"] = api.getItems("item");
 
-    expect(items).toBe(["item", "item2"]);
+    expect(items).toStrictEqual(["item", "item2"]);
   });
 });

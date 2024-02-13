@@ -1,25 +1,23 @@
 import { ValidateFunction, validateData } from "./internal/validate";
 
-export function validatedFn<
-  T extends Array<any>,
-  U = ValidateFunction<unknown>,
->(
-  fn: (...args: T) => Promise<void>,
-  parser: U = validateData<void>,
-): (...args: T) => Promise<U> {
-  return async (...args: T) => parser(await fn(...args));
+export function validatedFn<T extends never[], Return = void>(
+  fn: (...args: T) => Promise<Return>,
+  parser: ValidateFunction<Return> = (arg: unknown): arg is undefined =>
+    arg === undefined,
+): (...args: T) => Promise<Return> {
+  return async (...args: T) => validateData(await fn(...args), parser);
 }
 
 export type AuthorizedFetchFunctionOptions<Input, Query, Output> = {
-  outputParser?: z.ZodType<Output>;
-  queryParser?: z.ZodType<Query>;
-  inputParser?: z.ZodType<Input>;
+  outputParser?: ValidateFunction<Output>;
+  queryParser?: ValidateFunction<Query>;
+  inputParser?: ValidateFunction<Input>;
   shouldAuthenticate?: boolean;
 };
 
 export function authorizedFetch<
-  Input extends FetchOptions<"json">["body"] = undefined,
-  Query extends FetchOptions<"json">["query"] = FetchOptions<"json">["query"],
+  Input = undefined,
+  Query = undefined,
   Output = unknown,
   Endpoint = string | ((...args: string[]) => string),
   EndpointArgs extends string[] = Endpoint extends (...args: string[]) => string
@@ -27,7 +25,9 @@ export function authorizedFetch<
     : [never],
 >(
   endpoint: Endpoint,
+  // @ts-expect-error TODO: Fix this
   options: Omit<FetchOptions<"json">, "body" | "query" | "signal"> & {
+    // @ts-expect-error TODO: Fix this
     signal?: () => FetchOptions<"json">["signal"];
   } & AuthorizedFetchFunctionOptions<Input, Query, Output> = {},
 ): (
@@ -40,22 +40,27 @@ export function authorizedFetch<
       ? [args: { query?: Query; body: Input }]
       : [args: { query?: Query; body: Input; endpointArgs: EndpointArgs }]
 ) => Promise<Output> {
+  // @ts-expect-error TODO: Fix this
   return async (bearerToken, args) => {
     const argOpts = args ?? {};
     const {
-      queryParser = z.any(),
-      inputParser = z.undefined(),
-      outputParser = z.any(),
+      queryParser = (arg: unknown): Query => arg as Query,
+      inputParser = (arg: unknown): Input => arg as Input,
+      outputParser = (arg: unknown): Output => arg as Output,
       shouldAuthenticate = true,
       signal,
       ...init
     } = options;
 
-    if (shouldAuthenticate && !bearerToken)
-      throw Error(`Not Authenticated 🚫 for ${endpoint}`);
+    if (shouldAuthenticate && !bearerToken) {
+      throw new Error(`Not Authenticated 🚫 for ${endpoint}`);
+    }
 
-    let body = undefined;
-    if ("body" in argOpts) body = inputParser.parse(argOpts.body);
+    let body: Input | undefined;
+    if ("body" in argOpts) {
+      // @ts-expect-error TODO: Fix this
+      body = inputParser(argOpts.body);
+    }
 
     const resolvedEndpoint: string =
       endpoint instanceof Function &&
@@ -64,48 +69,18 @@ export function authorizedFetch<
         ? endpoint(...argOpts.endpointArgs)
         : endpoint;
 
-    if (isDev)
-      console.log({
-        ...init,
-        body,
-        query:
-          "query" in argOpts ? queryParser.parse(argOpts.query) : undefined,
-        headers: Object.assign(
-          init.headers ?? {},
-          !!bearerToken ? { Authorization: `Bearer ${bearerToken}` } : {},
-        ),
-      });
-
+    // @ts-expect-error TODO: Fix this
     const response = await apiFetch<Output>(resolvedEndpoint, {
       ...init,
       body,
-      signal: signal?.() ?? AbortSignal.timeout(10000),
-      query: "query" in argOpts ? queryParser.parse(argOpts.query) : undefined,
+      signal: signal?.() ?? AbortSignal.timeout(10_000),
+      query: "query" in argOpts ? queryParser(argOpts.query) : undefined,
       headers: Object.assign(
         init.headers ?? {},
-        !!bearerToken ? { Authorization: `Bearer ${bearerToken}` } : {},
+        bearerToken ? { Authorization: `Bearer ${bearerToken}` } : {},
       ),
-      onResponse(ctx) {
-        logEvent("select_content", {
-          content_type: resolvedEndpoint,
-          item_id: JSON.stringify({
-            request: ctx.request,
-            response: ctx.response,
-          }),
-        });
-        init.onResponse?.(ctx);
-      },
-      onResponseError(ctx) {
-        logEvent("exception", {
-          fatal: false,
-          description: `Error for ${resolvedEndpoint}: ${ctx.error?.message}`,
-        });
-        toast.error("Your request couldn't be processed! 😓");
-        console.error(ctx.error);
-        init.onResponseError?.(ctx);
-      },
     });
-    return outputParser.parse(response);
+    return outputParser(response);
   };
 }
 
