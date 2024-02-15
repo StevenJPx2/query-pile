@@ -3,7 +3,7 @@ name: autofix.ci # needed to securely identify the workflow
 on:
   pull_request:
   push:
-    branches: ["main"]
+    branches: ["master"]
 
 permissions:
   contents: read
@@ -14,13 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: corepack enable
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-      - run: pnpm install
+      - uses: oven-sh/setup-bun@v1
+      - run: bun i
       - name: Fix lint issues
-        run: pnpm lint:fix
+        run: bun run lint:fix
       - uses: autofix-ci/action@bee19d72e71787c12ca0f29de72f2833e437e4c9
         with:
           commit-message: "chore: apply automated fixes"

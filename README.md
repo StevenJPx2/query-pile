@@ -4,7 +4,7 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 
 <!-- [![bundle][bundle-src]][bundle-href] -->
-<!-- [![Codecov][codecov-src]][codecov-href] -->
+[![Codecov][codecov-src]][codecov-href]
 
 This is a light wrapper over [Tanstack Query](https://github.com/tanstack/query) that will help with organize your API repos.
 
