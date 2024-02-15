@@ -79,8 +79,8 @@ Published under [MIT License](./LICENSE).
 [npm-downloads-src]: https://img.shields.io/npm/dm/query-pile?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-downloads-href]: https://npmjs.com/package/query-pile
 
-<!-- [codecov-src]: https://img.shields.io/codecov/c/gh/unjs/query-pile/main?style=flat&colorA=18181B&colorB=F0DB4F
+[codecov-src]: https://img.shields.io/codecov/c/gh/unjs/query-pile/main?style=flat&colorA=18181B&colorB=F0DB4F
 [codecov-href]: https://codecov.io/gh/unjs/query-pile
 
 [bundle-src]: https://img.shields.io/bundlephobia/minzip/query-pile?style=flat&colorA=18181B&colorB=F0DB4F
-[bundle-href]: https://bundlephobia.com/result?p=query-pile -->
+[bundle-href]: https://bundlephobia.com/result?p=query-pile
