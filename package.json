@@ -17,7 +17,9 @@
     "react",
     "query",
     "tanstack",
-    "react"
+    "react-query",
+    "hooks",
+    "react-hooks"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -36,6 +38,10 @@
     "test": "bun run lint && bun run test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck"
   },
+  "peerDependencies": {
+    "typescript": ">=5",
+    "@tanstack/react-query": ">=5.20 || <6"
+  },
   "devDependencies": {
     "@tanstack/react-query": "^5.20.2",
     "@types/node": "^20.11.17",
@@ -45,7 +51,6 @@
     "eslint-config-unjs": "^0.2.1",
     "jiti": "^1.21.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3",
     "unbuild": "^2.0.0",
     "vitest": "^1.2.2"
   }
