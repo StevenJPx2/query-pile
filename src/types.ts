@@ -1,10 +1,10 @@
 import type {
-  UseQueryResult,
-  UseMutationResult,
   UseInfiniteQueryResult,
+  UseMutationResult,
+  UseQueryResult,
 } from "@tanstack/react-query";
 
-export type ApiLike = Record<string, (...args: never[]) => unknown>;
+export type ApiLike = Record<string, (arg1: unknown) => unknown>;
 
 export type ApiArgs<
   Api extends ApiLike,
@@ -21,7 +21,7 @@ export type UseApiReturn<Api extends ApiLike> = {
     ...args: never[]
   ) =>
     | UseQueryResult<ApiReturn<Api, P>, Error>
-    | UseMutationResult<ApiReturn<Api, P>, Error, ApiArgs<Api, P>>
+    | UseMutationResult<ApiReturn<Api, P>, Error, ApiArgs<Api, P>[0]>
     | UseInfiniteQueryResult<ApiReturn<Api, P>, Error>;
 };
 
