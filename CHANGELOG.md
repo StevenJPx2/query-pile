@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.2.0
+
+[compare changes](https://github.com/StevenJPx2/query-pile/compare/v0.1.0...v0.2.0)
+
+### 🩹 Fixes
+
+- ⚠️  Remove ability for multiple arguments in an api object ([c3ba1d1](https://github.com/StevenJPx2/query-pile/commit/c3ba1d1))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Remove ability for multiple arguments in an api object ([c3ba1d1](https://github.com/StevenJPx2/query-pile/commit/c3ba1d1))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.1.0
 
 [compare changes](https://github.com/StevenJPx2/query-pile/compare/v0.0.2...v0.1.0)
