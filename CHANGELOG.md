@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.2.1
+
+[compare changes](https://github.com/StevenJPx2/query-pile/compare/v0.2.0...v0.2.1)
+
+### 🩹 Fixes
+
+- Change argument type to never ([8648bf4](https://github.com/StevenJPx2/query-pile/commit/8648bf4))
+
+### ❤️ Contributors
+
+- Steven John <stevenjpx2@gmail.com>
+
 ## v0.2.0
 
 [compare changes](https://github.com/StevenJPx2/query-pile/compare/v0.1.0...v0.2.0)
