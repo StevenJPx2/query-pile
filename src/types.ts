@@ -4,7 +4,7 @@ import type {
   UseQueryResult,
 } from "@tanstack/react-query";
 
-export type ApiLike = Record<string, (arg1: unknown) => unknown>;
+export type ApiLike = Record<string, (arg1: never) => unknown>;
 
 export type ApiArgs<
   Api extends ApiLike,

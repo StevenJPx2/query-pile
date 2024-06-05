@@ -1,4 +1,4 @@
-import { ApiLike, UseApiReturn } from "./types";
+import type { ApiLike, UseApiReturn } from "./types";
 export { updateInfiniteQueryFactory } from "./infinite-query";
 
 /**

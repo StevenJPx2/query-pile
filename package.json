@@ -51,6 +51,7 @@
     "eslint-config-unjs": "^0.2.1",
     "jiti": "^1.21.0",
     "prettier": "^3.2.5",
+    "react": "^18.3.1",
     "unbuild": "^2.0.0",
     "vitest": "^1.2.2"
   }
